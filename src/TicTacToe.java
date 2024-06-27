@@ -1,12 +1,7 @@
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.JFrame;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class TicTacToe {
     int boardWidth = 600;
@@ -92,10 +87,68 @@ public class TicTacToe {
                continue;
             }
 
-            if(board[row][0].getText() == board[row][1].getText() && board[row][1].getText() == board[row][2].getText()){
+            if(board[row][0].getText() == board[row][1].getText() && 
+                board[row][1].getText() == board[row][2].getText()){
+                for (int i = 0; i < 3; i++) {
+                    setWinner(board[row][i]);
+                }
                 gameOver = true;
                 break;
             }
         }
+
+        // vertical
+        for(int col = 0; col < 3; col++){
+            if(board[0][col].getText() == ""){
+                continue;
+            }
+
+            if(board[0][col].getText() == board[1][col].getText() &&
+                board[1][col].getText() == board[2][col].getText()){
+                for (int i = 0; i < 3; i++) {
+                    setWinner(board[i][col]);
+                }
+                gameOver = true;
+                break;
+            }
+        }
+
+        // diagonal
+        if(board[0][0].getText() == board[1][1].getText() &&
+            board[1][1].getText() == board[2][2].getText() &&
+            board[0][0].getText() != ""){
+            for (int i = 0; i < 3; i++) {
+                setWinner(board[i][i]);
+            }
+            gameOver = true;
+            return;
+        }
+
+        // anti-diagonal
+        if(board[0][2].getText() == board[1][1].getText() &&
+            board[1][1].getText() == board[2][0].getText() &&
+            board[0][2].getText() != ""){
+            for (int i = 0; i < 3; i++) {
+                setWinner(board[i][2-i]);
+            }
+            gameOver = true;
+            return;
+        }
+
+        // check if there are any empty tiles left
+        for(int row = 0; row < 3; row++){
+            for(int col = 0; col < 3; col++){
+                if(board[row][col].getText() == ""){
+                    return;
+                }
+            }
+        }
+    }
+
+    void setWinner(JButton tile){
+        tile.setForeground(Color.green);
+        tile.setBackground(Color.gray);
+        textJLabel.setText(currentPlayer + " is the winner!");
+
     }
 }
