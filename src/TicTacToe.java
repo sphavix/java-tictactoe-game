@@ -19,6 +19,7 @@ public class TicTacToe {
     String currentPlayer = playerX;
 
     boolean gameOver = false;
+    int turns = 0;
 
     TicTacToe(){
         frame.setVisible(true);
@@ -65,6 +66,7 @@ public class TicTacToe {
                         if (tile.getText() == "")
                         {
                             tile.setText(currentPlayer);
+                            turns++;
                             checkWinner();
 
                             if(!gameOver)
@@ -129,20 +131,29 @@ public class TicTacToe {
             board[1][1].getText() == board[2][0].getText() &&
             board[0][2].getText() != ""){
             for (int i = 0; i < 3; i++) {
-                setWinner(board[i][2-i]);
+                setWinner(board[0][2]);
+                setWinner(board[1][1]);
+                setWinner(board[2][0]);
             }
             gameOver = true;
             return;
         }
 
-        // check if there are any empty tiles left
-        for(int row = 0; row < 3; row++){
-            for(int col = 0; col < 3; col++){
-                if(board[row][col].getText() == ""){
-                    return;
+        // check ties
+        if(turns == 9 && !gameOver){
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    setATie(board[row][col]);
                 }
             }
+            gameOver = true;
         }
+    }
+
+    void setATie(JButton tile){
+        tile.setForeground(Color.cyan);
+        tile.setBackground(Color.gray);
+        textJLabel.setText("It's a tie! Game Over!");
     }
 
     void setWinner(JButton tile){
